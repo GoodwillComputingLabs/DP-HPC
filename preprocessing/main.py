@@ -27,9 +27,7 @@ Usage:
 
 import os, time, argparse 
 import pandas as pd  
-from pandas.api.types import is_string_dtype
-
-ONLY_NEIGHBORS = False 
+from pandas.api.types import is_string_dtype 
  
 # Aggregate all data (numeric and textual) into the column of interest and create a csv file
 def join_dataset(inputfile, col, systemname):
@@ -183,6 +181,7 @@ def main():
     parser.add_argument('-sysname', type=str, help='System name to create new column.')
     parser.add_argument('-col', type=str, help='Unique column name.', default="")
     parser.add_argument('-cols', type=str, action='append', help='Multiple columns names.', default=[]) 
+    parser.add_argument('-neighbors_only', type=bool, help='Only create neighbor files.', default=False) 
     args = parser.parse_args()   
     
     # If multiple columns selected
@@ -198,7 +197,7 @@ def main():
             os.makedirs(output_neighbors)
 
         # Just create neighbor datafiles
-        if(ONLY_NEIGHBORS):
+        if(args.neighbors_only):
             df_all = pd.read_csv(args.indir + "/all.csv")
             print("Creating neighbors...")
             create_neighbors(df_all, output_neighbors)
